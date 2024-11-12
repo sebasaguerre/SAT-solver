@@ -1,5 +1,15 @@
 import numpy as np
 
+def read_sudoku_rules(rules):
+    rule_set = []
+    with open(rules, "r") as file:
+        for line in file:
+            if line.startswith("p"):
+                continue 
+            else:
+                rule_set.append(line.strip())
+    return rule_set
+
 # read sudokus
 def read(doc):
     sudokus = []
@@ -28,10 +38,26 @@ def get_constrains(rows):
     
     return problem_constrains
 
+# get final constrains for problem
+def final_constrains(p_constrains, rules):
+    problem_rules = rules.copy()
+    for pc in p_constrains:
+        for rule in rules:
+            if pc in rule:
+                problem_rules.remove(rule)
+    return problem_rules
+
 # representation
-def represent(sudoku):
+def sudoku_represent(sudoku, sudoku_rules):
     n_rows = np.sqrt(len(sudoku))
     rows = get_rows(sudoku, n_rows)
-    problem_constrains = get_constrains(rows)
+    hard_constrains = get_constrains(rows)
+    problem_constrains = final_constrains(hard_constrains, sudoku_rules)
 
+def dpll(rep):
+    
+    pass
+
+
+    
 
